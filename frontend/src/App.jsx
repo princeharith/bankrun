@@ -24,8 +24,8 @@ function App() {
             <PlayerCard
               key={player}
               name={player}
-              onU8={() => handleAction(player, 'u10')}
-              onO8={() => handleAction(player, 'o10')}
+              onU8={() => handleAction(player, 'u12')}
+              onO8={() => handleAction(player, 'o11')}
             />
           ))}
         </div>

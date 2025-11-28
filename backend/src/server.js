@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Health check
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', message: 'Strava Betting API is running' });
+    res.json({ status: 'ok', message: 'App is running' });
 });
 
 // Routes (we'll add these next)

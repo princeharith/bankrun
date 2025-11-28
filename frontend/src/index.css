@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+    --font-press-start: 'Press Start 2P', monospace;
+}
+
+@layer base {
+    body {
+        @apply font-press-start bg-black text-white p-10 min-h-screen leading-relaxed;
+    }
+}
+
+@layer utilities {
+    .scanline {
+        @apply fixed top-0 left-0 w-full h-full pointer-events-none z-[1000];
+        background: linear-gradient(to bottom,
+                transparent 50%,
+                rgba(255, 255, 255, 0.02) 50%);
+        background-size: 100% 4px;
+    }
+}

@@ -1,35 +1,47 @@
-import React from 'react';
-import PlayerCard from './components/PlayerCard';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import Login from './components/Login';
+import AuthCallback from './components/AuthCallback';
+import useAuthStore from './store/authStore';
 
 function App() {
-  const players = [
-    'Harry', 'Sarah', 'Marcus', 'Luna', 'Diego', 'Zara'
-  ];
+  const initialize = useAuthStore((state) => state.initialize);
+  const { user, loading } = useAuthStore();
 
-  const handleAction = (player, action) => {
-    console.log(`${player} - ${action} clicked`);
-  };
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center font-press-start">
+        LOADING...
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="scanline"></div>
-
-      <div className="max-w-[1200px] mx-auto">
-        <div className="text-center text-6xl mb-20 tracking-[8px] drop-shadow-[4px_4px_0_#333] md:text-4xl md:tracking-[4px]">
-          BANKRUN
-        </div>
-
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-10 p-5 md:grid-cols-1">
-          {players.map((player) => (
-            <PlayerCard
-              key={player}
-              name={player}
-              onU8={() => handleAction(player, 'u12')}
-              onO8={() => handleAction(player, 'o11')}
-            />
-          ))}
-        </div>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/login"
+            // element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
+            element={<Login />}
+          />
+          <Route
+            path="/auth/callback"
+            element={<AuthCallback />}
+          />
+          <Route
+            path="/dashboard"
+            element={user ? <Dashboard /> : <Navigate to="/login" replace />}
+          />
+          <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

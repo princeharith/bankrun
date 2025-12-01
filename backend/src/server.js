@@ -19,8 +19,10 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', message: 'App is running' });
 });
 
-// Routes (we'll add these next)
-// app.use('/auth', authRoutes);
+import authRoutes from './routes/authRoutes.js';
+
+// Routes
+app.use('/auth', authRoutes);
 // app.use('/api', apiRoutes);
 
 // Error handling

@@ -51,6 +51,8 @@ router.post('/strava', async (req, res) => {
             },
         }).returning();
 
+        console.log('[DEBUG] Authenticated User:', JSON.stringify(user, null, 2));
+
         res.json({ user });
 
     } catch (error) {

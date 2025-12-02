@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, decimal, timestamp, bigint, jsonb, integer, date, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, decimal, timestamp, bigint, jsonb, integer, date, index, unique } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // Users table
@@ -42,6 +42,8 @@ export const weeklyTotals = pgTable('weekly_totals', {
     calculatedAt: timestamp('calculated_at').defaultNow().notNull(),
 }, (table) => ({
     uniqueUserWeek: index('unique_user_week').on(table.userId, table.weekStartDate),
+    // Add unique constraint for upsert
+    uniqueUserWeekConstraint: unique('unique_user_week_constraint').on(table.userId, table.weekStartDate),
 }));
 
 // Weekly lines table

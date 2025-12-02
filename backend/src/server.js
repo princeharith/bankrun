@@ -20,10 +20,13 @@ app.get('/health', (req, res) => {
 });
 
 import authRoutes from './routes/authRoutes.js';
+import activityRoutes from './routes/activityRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Routes
 app.use('/auth', authRoutes);
-// app.use('/api', apiRoutes);
+app.use('/api/activities', activityRoutes);
+app.use('/api/users', userRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

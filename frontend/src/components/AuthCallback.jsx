@@ -12,35 +12,41 @@ const AuthCallback = () => {
     const processedCode = useRef(false);
 
     useEffect(() => {
+        // If we already have a user, redirect immediately
         if (user) {
             navigate('/dashboard');
             return;
         }
 
         const code = searchParams.get('code');
-
         if (!code) {
             setError('No authorization code found');
             return;
         }
 
-        if (processedCode.current) return;
+        // Prevent double-firing in React Strict Mode
+        if (processedCode.current) {
+            console.log('Code already processed or processing');
+            return;
+        }
         processedCode.current = true;
 
         const authenticate = async () => {
-            console.log('Authenticating with Strava...');
+            console.log('Authenticating with Strava code:', code);
             try {
                 await loginWithStravaCode(code);
                 navigate('/dashboard');
             } catch (err) {
                 console.error('Auth Error:', err);
                 setError('Failed to authenticate with Strava');
-                processedCode.current = false; // Allow retry on error if needed
+                // Do NOT reset processedCode.current = false here.
+                // If the code is invalid, retrying won't help.
+                // If it was a network error, the user should reload the page.
             }
         };
 
         authenticate();
-    }, [searchParams, loginWithStravaCode, navigate]);
+    }, [searchParams, loginWithStravaCode, navigate, user]);
 
     if (error) {
         return (
